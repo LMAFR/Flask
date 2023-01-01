@@ -25,3 +25,13 @@ def show_post(post_id):
 def show_subpath(subpath):
     # Show the subpath after /path/
     return f'Subpath: {escape(subpath)}'
+
+# The next way to write a route makes the website redirect you to the version with slash at the end in case you write the path without that slash
+@app.route('/projects/')
+def projects():
+    return 'The project page'
+
+# And the format below makes the website raise a 404 error if you write the path with an additional slash at the end of the route
+@app.route('/about')
+def about():
+    return 'The about page'
