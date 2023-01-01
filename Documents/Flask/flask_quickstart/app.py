@@ -1,5 +1,6 @@
 from flask import Flask
 from markupsafe import escape
+from flask import url_for
 
 app = Flask(__name__)
 
@@ -35,3 +36,13 @@ def projects():
 @app.route('/about')
 def about():
     return 'The about page'
+
+@app.route('/login')
+def login():
+    return 'login'
+
+with app.test_request_context():
+    print(url_for('index'))
+    print(url_for('login'))
+    print(url_for('login', next='/'))
+    print(url_for('show_user_profile', username='John Doe'))
