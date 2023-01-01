@@ -37,9 +37,13 @@ def projects():
 def about():
     return 'The about page'
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return 'login'
+    if request.method == 'POST':
+        return do_the_login()
+    # By default, the method is POST
+    else:
+        return show_the_login_form()
 
 with app.test_request_context():
     print(url_for('index'))
