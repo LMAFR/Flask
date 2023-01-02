@@ -50,3 +50,7 @@ with app.test_request_context():
     print(url_for('login'))
     print(url_for('login', next='/'))
     print(url_for('show_user_profile', username='John Doe'))
+    # Create a URL to look at the static file:
+    url_for('static', filename='style.css')
+
+
