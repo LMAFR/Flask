@@ -1,6 +1,7 @@
 from flask import Flask
 from markupsafe import escape
 from flask import url_for
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -8,9 +9,10 @@ app = Flask(__name__)
 def index():
     return 'Index Page'
 
-@app.route('/<name>')
-def hello_world(name):
-    return f"Hello {escape(name)}!"
+@app.route('/hello/')
+@app.route('/hello/<name>')
+def hello_world(name=None):
+    return render_template('hello.html', name=name)
 
 @app.route('/user/<username>')
 def show_user_profile(username):
