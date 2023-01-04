@@ -1,7 +1,7 @@
 from flask import Flask
 from markupsafe import escape
 from flask import url_for
-from flask import render_template
+from flask import render_template, request
 
 app = Flask(__name__)
 
@@ -54,5 +54,11 @@ with app.test_request_context():
     print(url_for('show_user_profile', username='John Doe'))
     # Create a URL to look at the static file:
     url_for('static', filename='style.css')
+    # url_for('', filename='favicon.ico')
+
+# With assert, a message is raised in case the condition is not met )no messages for the two asserts below)
+with app.test_request_context('/hello', method = 'POST'):
+    assert request.path == '/hello'
+    assert request.method == 'POST'
 
 
