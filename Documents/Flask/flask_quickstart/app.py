@@ -2,6 +2,7 @@ from flask import Flask
 from markupsafe import escape
 from flask import url_for
 from flask import render_template, request
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -72,6 +73,12 @@ with app.test_request_context():
 with app.test_request_context('/hello', method = 'POST'):
     assert request.path == '/hello'
     assert request.method == 'POST'
+
+@app.route('/upload', methods=['GET','POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = method.files['test.txt']
+        f.save(f'/var/www/uploads/{secure_filename(f.filename)}')
 
 
 
