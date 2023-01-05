@@ -1,6 +1,6 @@
 from flask import Flask
 from markupsafe import escape
-from flask import url_for
+from flask import url_for, redirect, abort
 from flask import render_template, request, make_response
 from werkzeug.utils import secure_filename
 
@@ -36,12 +36,18 @@ def show_subpath(subpath):
 # The next way to write a route makes the website redirect you to the version with slash at the end in case you write the path without that slash
 @app.route('/projects/')
 def projects():
-    return 'The project page'
+    return redirect(url_for('about'))
 
 # And the format below makes the website raise a 404 error if you write the path with an additional slash at the end of the route
 @app.route('/about')
 def about():
+    abort(401)
+    this_is_never_executed()
     return 'The about page'
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
 
 # @app.route('/login', methods=['GET', 'POST'])
 # def login():
