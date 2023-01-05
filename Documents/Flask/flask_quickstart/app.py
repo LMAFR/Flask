@@ -47,7 +47,9 @@ def about():
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('page_not_found.html'), 404
+    resp = make_response(render_template('page_not_found.html'), 404)
+    resp.headers['X-something'] = 'A value'
+    return resp
 
 # @app.route('/login', methods=['GET', 'POST'])
 # def login():
