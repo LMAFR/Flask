@@ -1,14 +1,17 @@
 from flask import Flask
 from markupsafe import escape
 from flask import url_for
-from flask import render_template, request
+from flask import render_template, request, make_response
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Index Page'
+    resp = make_response(render_template('index.html'))
+    resp.set_cookie('username', 'aflorido')
+    username = request.cookies.get('username')
+    return resp
 
 @app.route('/hello/')
 @app.route('/hello/<name>')
