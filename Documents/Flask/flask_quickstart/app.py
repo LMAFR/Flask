@@ -1,17 +1,44 @@
 from flask import Flask
 from markupsafe import escape
-from flask import url_for, redirect, abort
+from flask import url_for, redirect, abort, session
 from flask import render_template, request, make_response
 from werkzeug.utils import secure_filename
+import secrets
 
 app = Flask(__name__)
 
+app.secret_key = secrets.token_hex()
+
+# @app.route('/')
+# def index():
+#     resp = make_response(render_template('index.html'))
+#     resp.set_cookie('username', 'aflorido')
+#     username = request.cookies.get('username')
+#     return resp
+
 @app.route('/')
 def index():
-    resp = make_response(render_template('index.html'))
-    resp.set_cookie('username', 'aflorido')
-    username = request.cookies.get('username')
-    return resp
+    if 'username' in session:
+        return f'Logged in as {session["username"]}'
+    return 'You are not logged in'
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for('index'))
+    return  '''
+        <form method="post">
+            <p><input type=text name=username></p>
+            <p><input type=submit value=Login></p>
+        </form>
+    '''
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it is there
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 @app.route('/hello/')
 @app.route('/hello/<name>')
@@ -60,16 +87,16 @@ def page_not_found(error):
 #         return show_the_login_form()
 
 # request object
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if valid_login(request.form['username'],
-                       request.form['password']):
-           return log_the_user_in(request.form['username'])
-        else:
-            error = 'Invalid username/password'
-    return render_template('login.html', error = error)
+# @app.route('/login', methods=['POST', 'GET'])
+# def login():
+#     error = None
+#     if request.method == 'POST':
+#         if valid_login(request.form['username'],
+#                        request.form['password']):
+#            return log_the_user_in(request.form['username'])
+#         else:
+#             error = 'Invalid username/password'
+#     return render_template('login.html', error = error)
 
 with app.test_request_context():
     print(url_for('index'))
