@@ -31,3 +31,9 @@ def init_db_command():
     '''
     init_db()
     click.echo('Initialized the database.')
+
+def init_app(app):
+    # The line below tells Flask to call that function when cleaning up, after returning the response.
+    app.teardown_appcontext(close_db)
+    # The line below adds a new command that can be called with the flask command in CLI
+    app.cli.add_command(init_db_command)
