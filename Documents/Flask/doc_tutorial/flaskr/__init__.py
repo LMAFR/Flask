@@ -38,6 +38,8 @@ def create_app(test_config=None):
     from . import blog
     app.register_blueprint(blog.bp)
 
+    # The line below makes equivalent url_for('index') and url_for('blog.index').
+    # Anyway, is main function is show the index template in the '/' URL.
     app.add_url_rule('/', endpoint='index')
 
     return app
