@@ -2,6 +2,7 @@ import pytest
 from flask import g, session
 from flaskr.db import get_db
 
+# Register Feature
 def test_register(client, app):
     assert client.get('/auth/register').status_code == 200
     response = client.post(
@@ -26,6 +27,7 @@ def test_register_validate_input(client, username, password, message):
     )
     assert message in response.data
 
+# Login Feature
 def test_login(client, auth):
     assert client.get('/auth/login').status_code == 200
     response = auth.login()
@@ -43,3 +45,12 @@ def test_login(client, auth):
 def test_login_validate_input(auth, username, password, message):
     response = auth.login(username, password)
     assert message in response.data
+
+# Logout Feature
+def test_logout(auth, client):
+
+    auth.login()
+
+    with client:
+        auth.logout()
+        assert 'user_id' not in session
