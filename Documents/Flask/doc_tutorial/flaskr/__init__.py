@@ -1,13 +1,14 @@
 # This file will be treated as a package (due to its name)
 import os
 from flask import Flask
+from config import secret_key
 
 # Our application factory function will be "create_app"
 def create_app(test_config=None):
     # create and configure the app (Flask instance)
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        SECRET_KEY=secret_key,
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
