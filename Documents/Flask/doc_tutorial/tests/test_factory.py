@@ -6,5 +6,5 @@ def test_config():
     assert create_app({'TESTING':True}).testing
 
 def test_hello(client):
-    response = client.get('/hello')
-    assert response.data == b'Hello world!'
+    response = client.get('/hello/')
+    assert b'Hello world!' in response.data

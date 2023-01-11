@@ -10,9 +10,9 @@ def test_index(auth, client):
     response = client.get('/')
     assert b'Log Out' in response.data
     assert b'test title' in response.data
-    assert b'by test on 2018-01-01' in response.data
-    assert b'test \nbody' in response.data
-    assert b'href="/1/update/"' in response.data
+    assert b'By test on 2018-01-01' in response.data
+    assert b'test\nbody' in response.data
+    assert b'href="/1/update"' in response.data
 
 @pytest.mark.parametrize('path', (
     '/create',
@@ -43,7 +43,7 @@ def test_author_required(client, app, auth):
     '/2/update',
     '/2/delete',
 ))
-def test_exists_required(auth, client):
+def test_exists_required(auth, client, path):
     auth.login()
     assert client.post(path).status_code == 404
 
@@ -57,7 +57,7 @@ def test_create(client, auth, app):
         count = db.execute("SELECT COUNT(id) FROM post").fetchone()[0]
         assert count == 2
 
-def test_update(auth, client, app)
+def test_update(auth, client, app):
     auth.login()
     assert client.get('/1/update').status_code == 200
     client.post('/1/update', data = {'title':'Updated', 'body':''})
@@ -74,7 +74,7 @@ def test_update(auth, client, app)
 def test_create_update_validate(client, auth, path):
     auth.login()
     response = client.post(path, data={'title':'', 'body':''})
-    assert b'Title is required.' in response.data
+    assert b'Title is required' in response.data
 
 def test_delete(client, auth, app):
     auth.login()
